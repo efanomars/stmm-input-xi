@@ -1,0 +1,7 @@
+/build
+configure
+/nbproject
+.metadata
+.project
+.cproject
+.settings

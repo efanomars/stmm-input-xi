@@ -5,7 +5,7 @@
 Requirements
 ------------
 g++ compiler or compatible (>= C++14)
-libgtkmm3.0-dev
+libgtkmm-3.0-dev
 libxi-dev
 libx11-dev
 

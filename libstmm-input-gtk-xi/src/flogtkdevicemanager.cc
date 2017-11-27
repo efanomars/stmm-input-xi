@@ -42,19 +42,18 @@ using Private::Flo::GtkXKeyboardDevice;
 using Private::Flo::XIEventSource;
 using Private::Flo::FloGtkListenerExtraData;
 
-bool Private::Flo::checkIsNotWayland()
+void Private::Flo::checkIsNotWayland()
 {
 	const auto p0Value = getenv("WAYLAND_DISPLAY");
-	if (p0Value == nullptr) {
-		// not defined
-		return true;
+	if (p0Value != nullptr) {
+		// variable defined
+		if ((*p0Value) != 0) {
+			// not empty string
+			std::string sError =    "Error: Creation failed because on a Wayland system.\n"
+									"       FloGtkDeviceManager only works properly on X11.";
+			throw std::runtime_error(sError); //--------------------------------
+		}
 	}
-	if ((*p0Value) == 0) {
-		// empty string
-		return true;
-	}
-	// this program is probably running on Wayland (instead of X11)
-	return false;
 }
 using Private::Flo::checkIsNotWayland;
 
@@ -62,10 +61,7 @@ shared_ptr<FloGtkDeviceManager> FloGtkDeviceManager::create(bool bEnableEventCla
 															, KeyRepeat::MODE eKeyRepeatMode, const shared_ptr<GdkKeyConverter>& refGdkConverter
 															, const Glib::RefPtr<Gdk::Display>& refDisplay)
 {
-	if (! checkIsNotWayland()) {
-		std::cout << "Error: FloGtkDeviceManager doesn't work as expected in Wayland" << '\n';
-		return shared_ptr<FloGtkDeviceManager>{}; //----------------------------
-	}
+	checkIsNotWayland();
 	shared_ptr<FloGtkDeviceManager> refInstance(new FloGtkDeviceManager(bEnableEventClasses, aEnDisableEventClasses
 																		, eKeyRepeatMode, refGdkConverter));
 	auto refBackend = std::make_unique<GtkBackend>(refInstance.operator->(), refDisplay);
@@ -77,10 +73,7 @@ shared_ptr<FloGtkDeviceManager> FloGtkDeviceManager::create(const std::string& /
 															, bool bEnableEventClasses
 															, const std::vector<Event::Class>& aEnDisableEventClasses)
 {
-	if (! checkIsNotWayland()) {
-		std::cout << "Error: FloGtkDeviceManager doesn't work as expected in Wayland" << '\n';
-		return shared_ptr<FloGtkDeviceManager>{}; //----------------------------
-	}
+	checkIsNotWayland();
 	shared_ptr<FloGtkDeviceManager> refInstance(new FloGtkDeviceManager(bEnableEventClasses, aEnDisableEventClasses
 																		, KeyRepeat::getMode(), GdkKeyConverter::getConverter()));
 	auto refBackend = std::make_unique<GtkBackend>(refInstance.operator->(), Gdk::Display::get_default());

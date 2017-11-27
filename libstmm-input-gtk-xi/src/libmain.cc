@@ -31,7 +31,13 @@ extern "C" {
 shared_ptr<stmi::ChildDeviceManager> createPlugin(const std::string& sAppName
 												, bool bEnableEventClasses, const std::vector<stmi::Event::Class>& aEnDisableEventClasses)
 {
-	return stmi::FloGtkDeviceManager::create(sAppName, bEnableEventClasses, aEnDisableEventClasses);
+	shared_ptr<stmi::ChildDeviceManager> refChild; 
+	try {
+		refChild = stmi::FloGtkDeviceManager::create(sAppName, bEnableEventClasses, aEnDisableEventClasses);
+	} catch (const std::runtime_error& oErr) {
+		std::cerr << oErr.what() << '\n';
+	}
+	return refChild;
 }
 
 #ifdef __cplusplus

@@ -86,7 +86,7 @@ int deviceFloaterMain(int argc, char** argv)
 			--argc;
 			++argv;
 			if (argc == 1) {
-				std::cout << "Error: missing argument: number of seconds" << '\n';
+				std::cerr << "Error: missing argument: number of seconds" << '\n';
 				return EXIT_FAILURE; //-----------------------------------------
 			} else {
 				try {
@@ -97,7 +97,7 @@ int deviceFloaterMain(int argc, char** argv)
 						nAcquireSeconds = std::ceil(fAcquireSeconds);
 					}
 				} catch (const std::runtime_error& oErr) {
-					std::cout << "Error: " << oErr.what() << '\n';
+					std::cerr << "Error: " << oErr.what() << '\n';
 					return EXIT_FAILURE; //-------------------------------------
 				}
 				--argc;
@@ -111,8 +111,11 @@ int deviceFloaterMain(int argc, char** argv)
 
 	if (! checkIsNotWayland()) {
 		// Need X11 to work properly
-		std::cout << "Error: this program doesn't work as expected in Wayland" << '\n';
-		return EXIT_FAILURE; //-------------------------------------
+ 		Gtk::MessageDialog oDlg("This program only works properly on X11.\n"
+								"On a Wayland based system like this,\n"
+								"floating a device has at best no effect.", false
+ 								, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, false);
+		oDlg.run();
 	}
 
 	const Glib::ustring sAppName = "ch.efanomars.devicefloater";
@@ -123,7 +126,7 @@ int deviceFloaterMain(int argc, char** argv)
 		XiDevicesWindow oWindow(sWindoTitle, nAcquireSeconds);
 		nRet = refApp->run(oWindow);
 	} catch (const std::runtime_error& oErr) {
-		std::cout << "Error: " << oErr.what() << '\n';
+		std::cerr << "Error: " << oErr.what() << '\n';
 		nRet = EXIT_FAILURE;
 	}
 	return nRet;

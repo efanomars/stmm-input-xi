@@ -59,7 +59,7 @@ namespace Flo
 	class XIEventSource;
 	class FloGtkListenerExtraData;
 
-	bool checkIsNotWayland();
+	void checkIsNotWayland();
 }
 }
 
@@ -91,7 +91,7 @@ public:
 	 * @param eKeyRepeatMode Key repeat translation type.
 	 * @param refGdkConverter The keycode to hardware key converter. Cannot be null.
 	 * @param refDisplay The display used to initialize XInput2. Can be null.
-	 * @return The created instance.
+	 * @return The created instance. Cannot be null.
 	 * @throws std::runtime_error is if an error occurs (example: XInput2 is not supported).
 	 */
 	static shared_ptr<FloGtkDeviceManager> create(bool bEnableEventClasses, const std::vector<Event::Class>& aEnDisableEventClasses
@@ -115,6 +115,7 @@ public:
 	 * @param bEnableEventClasses Whether to enable or disable all but aEnDisableEventClasses.
 	 * @param aEnDisableEventClasses The event classes to be enabled or disabled according to bEnableEventClasses.
 	 * @return The created instance. Cannot be null.
+	 * @throws std::runtime_error is if an error occurs (example: not running on X11).
 	 */
 	static shared_ptr<FloGtkDeviceManager> create(const std::string& sAppName
 												, bool bEnableEventClasses, const std::vector<Event::Class>& aEnDisableEventClasses);

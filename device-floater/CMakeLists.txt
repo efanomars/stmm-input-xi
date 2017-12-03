@@ -2,6 +2,9 @@
 
 cmake_minimum_required(VERSION 3.0)
 
+option(STMM_INSTALL_LAUNCHER "Install launcher in share/applications/ (implies STMM_INSTALL_ICONS=ON)" ON)
+option(STMM_INSTALL_ICONS "Install icons in share/icons/hicolor/(size)/apps/" ON)
+
 project(device-floater CXX)
 
 set(RUNTIME_OUTPUT_DIRECTORY "build")
@@ -47,10 +50,11 @@ set(STMMI_DEVFLO_SOURCES
         ${PROJECT_SOURCE_DIR}/src/xideviceswindow.h
         ${PROJECT_SOURCE_DIR}/src/xideviceswindow.cc
         )
+set(STMMI_DEVFLO_DATA_DIR  ${PROJECT_SOURCE_DIR}/data)
 set(STMMI_DEVFLO_DATA_FILES
-        ${PROJECT_SOURCE_DIR}/data/buoy_32313.png
-        ${PROJECT_SOURCE_DIR}/data/keyboard_1420.png
-        ${PROJECT_SOURCE_DIR}/data/mouse_347.png
+        ${STMMI_DEVFLO_DATA_DIR}/buoy_32313.png
+        ${STMMI_DEVFLO_DATA_DIR}/keyboard_1420.png
+        ${STMMI_DEVFLO_DATA_DIR}/mouse_347.png
         )
 
 add_executable(device-floater ${STMMI_DEVFLO_SOURCES} ${PROJECT_BINARY_DIR}/config.cc)
@@ -89,3 +93,17 @@ install(TARGETS device-floater RUNTIME DESTINATION "bin")
 
 install(FILES ${STMMI_DEVFLO_DATA_FILES}  DESTINATION   ${STMMI_DEVFLO_PKG_REL_DATA_DIR})
 
+if (STMM_INSTALL_LAUNCHER)
+    install(FILES         "${STMMI_DEVFLO_DATA_DIR}/applications/device-floater.desktop"
+            DESTINATION "${CMAKE_INSTALL_DATADIR}/applications/")
+endif()
+if (STMM_INSTALL_ICONS OR STMM_INSTALL_LAUNCHER)
+    install(FILES         "${STMMI_DEVFLO_DATA_DIR}/icons/hicolor/24x24/apps/device-floater.png"
+            DESTINATION   "${CMAKE_INSTALL_DATADIR}/icons/hicolor/24x24/apps/")
+    install(FILES         "${STMMI_DEVFLO_DATA_DIR}/icons/hicolor/32x32/apps/device-floater.png"
+            DESTINATION   "${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/apps/")
+    install(FILES         "${STMMI_DEVFLO_DATA_DIR}/icons/hicolor/48x48/apps/device-floater.png"
+            DESTINATION   "${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps/")
+    install(FILES         "${STMMI_DEVFLO_DATA_DIR}/icons/hicolor/scalable/apps/device-floater.svg"
+            DESTINATION   "${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps/")
+endif()

@@ -59,6 +59,11 @@ def main():
 
 	subprocess.check_call("{} rm -r -f {}/bin/device-floater".format(sSudo, sDestDir).split())
 	subprocess.check_call("{} rm -r -f {}/share/device-floater".format(sSudo, sDestDir).split())
+	subprocess.check_call("{} rm -r -f {}/share/icons/hicolor/24x24/apps/device-floater.png".format(sSudo, sDestDir).split())
+	subprocess.check_call("{} rm -r -f {}/share/icons/hicolor/32x32/apps/device-floater.png".format(sSudo, sDestDir).split())
+	subprocess.check_call("{} rm -r -f {}/share/icons/hicolor/48x48/apps/device-floater.png".format(sSudo, sDestDir).split())
+	subprocess.check_call("{} rm -r -f {}/share/icons/hicolor/scalable/apps/device-floater.svg".format(sSudo, sDestDir).split())
+	subprocess.check_call("{} rm -r -f {}/share/applications/device-floater.desktop".format(sSudo, sDestDir).split())
 
 	if oArgs.bRemoveBuilds:
 		os.chdir("..")

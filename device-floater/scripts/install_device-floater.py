@@ -33,6 +33,10 @@ def main():
 						, default="/usr/local", dest="sDestDir")
 	oParser.add_argument("--no-sudo", help="don't use sudo to install", action="store_true"\
 						, default=False, dest="bDontSudo")
+	oParser.add_argument("--no-icons", help="don't install icons (implies --no-launcher)", action="store_true"\
+						, default=False, dest="bNoIcons")
+	oParser.add_argument("--no-launcher", help="don't install launcher (which needs gksu)", action="store_true"\
+						, default=False, dest="bNoLauncher")
 	oArgs = oParser.parse_args()
 
 	sDestDir = os.path.abspath(oArgs.sDestDir)
@@ -53,12 +57,25 @@ def main():
 	else:
 		sSudo = "sudo"
 
+	sInstallIcons = "-D STMM_INSTALL_ICONS="
+	if (oArgs.bNoIcons):
+		sInstallIcons += "OFF"
+		oArgs.bNoLauncher = True
+	else:
+		sInstallIcons += "ON"
+
+	sInstallLauncher = "-D STMM_INSTALL_LAUNCHER="
+	if (oArgs.bNoLauncher):
+		sInstallLauncher += "OFF"
+	else:
+		sInstallLauncher += "ON"
+
 	if not os.path.isdir("build"):
 		os.mkdir("build")
 
 	os.chdir("build")
 
-	subprocess.check_call("cmake {} {} ..".format(sBuildType, sDestDir).split())
+	subprocess.check_call("cmake {} {} {} {} ..".format(sBuildType, sDestDir, sInstallIcons, sInstallLauncher).split())
 	subprocess.check_call("make $STMM_MAKE_OPTIONS", shell=True)
 	subprocess.check_call("{} make install".format(sSudo).split())
 

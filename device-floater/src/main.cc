@@ -64,33 +64,33 @@ void printDirs()
 	std::cout << "Dirs: user data dir:   " << Config::getDataDir() << '\n';
 }
 
-int deviceFloaterMain(int argc, char** argv)
+int deviceFloaterMain(int nArgC, char** aArgV)
 {
 	int32_t nAcquireSeconds = XiDevicesWindow::s_nDefaultAcquireSeconds;
 	//
-	if (argc >= 2) {
-		char* argvZeroSave = ((argc >= 1) ? argv[0] : nullptr);
-		if ((strcmp("--version", argv[1]) == 0) || (strcmp("-v", argv[1]) == 0)) {
+	if (nArgC >= 2) {
+		char* p0ArgVZeroSave = ((nArgC >= 1) ? aArgV[0] : nullptr);
+		if ((strcmp("--version", aArgV[1]) == 0) || (strcmp("-v", aArgV[1]) == 0)) {
 			printVersion();
 			return EXIT_SUCCESS; //---------------------------------------------
 		}
-		if ((strcmp("--help", argv[1]) == 0) || (strcmp("-h", argv[1]) == 0)) {
+		if ((strcmp("--help", aArgV[1]) == 0) || (strcmp("-h", aArgV[1]) == 0)) {
 			printUsage();
 			return EXIT_SUCCESS; //---------------------------------------------
 		}
-		if (strcmp("--dirs", argv[1]) == 0) {
+		if (strcmp("--dirs", aArgV[1]) == 0) {
 			printDirs();
 			return EXIT_SUCCESS; //---------------------------------------------
 		}
-		if ((strcmp("--acquire-secs", argv[1]) == 0) || (strcmp("-a", argv[1]) == 0)) {
-			--argc;
-			++argv;
-			if (argc == 1) {
+		if ((strcmp("--acquire-secs", aArgV[1]) == 0) || (strcmp("-a", aArgV[1]) == 0)) {
+			--nArgC;
+			++aArgV;
+			if (nArgC == 1) {
 				std::cerr << "Error: missing argument: number of seconds" << '\n';
 				return EXIT_FAILURE; //-----------------------------------------
 			} else {
 				try {
-					double fAcquireSeconds = Glib::Ascii::strtod(argv[1]);
+					double fAcquireSeconds = Glib::Ascii::strtod(aArgV[1]);
 					if (fAcquireSeconds >= XiDevicesWindow::s_nMaxAcquireSeconds) {
 						nAcquireSeconds = XiDevicesWindow::s_nMaxAcquireSeconds;
 					} else if (fAcquireSeconds >= 1) {
@@ -100,11 +100,11 @@ int deviceFloaterMain(int argc, char** argv)
 					std::cerr << "Error: " << oErr.what() << '\n';
 					return EXIT_FAILURE; //-------------------------------------
 				}
-				--argc;
-				++argv;
+				--nArgC;
+				++aArgV;
 			}
 		}
-		argv[0] = argvZeroSave;
+		aArgV[0] = p0ArgVZeroSave;
 	}
 
 	int nRet = EXIT_SUCCESS;
@@ -122,7 +122,7 @@ int deviceFloaterMain(int argc, char** argv)
 	const Glib::ustring sWindoTitle = "device-floater " + Config::getVersionString();
 	try {
 		//
-		Glib::RefPtr<Gtk::Application> refApp = Gtk::Application::create(argc, argv, sAppName);
+		Glib::RefPtr<Gtk::Application> refApp = Gtk::Application::create(nArgC, aArgV, sAppName);
 		XiDevicesWindow oWindow(sWindoTitle, nAcquireSeconds);
 		nRet = refApp->run(oWindow);
 	} catch (const std::runtime_error& oErr) {
@@ -133,8 +133,8 @@ int deviceFloaterMain(int argc, char** argv)
 }
 } // namespace stmi
 
-int main(int argc, char** argv)
+int main(int nArgC, char** aArgV)
 {
-	return stmi::deviceFloaterMain(argc, argv);
+	return stmi::deviceFloaterMain(nArgC, aArgV);
 }
 

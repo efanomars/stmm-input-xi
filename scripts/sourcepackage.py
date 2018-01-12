@@ -28,7 +28,7 @@ def main():
 	aProjDirs = ["libstmm-input-gtk-xi"
 				, "device-floater"]
 
-	aExclPatterns = ["build*", "configure", "nbproject*", ".project", ".cproject", ".settings"]
+	aExclPatterns = ["build*", "configure", "nbproject*", ".project", ".cproject", ".settings", "core"]
 
 	sExcludes = ""
 	for sProjDir in aProjDirs:
@@ -58,6 +58,7 @@ def main():
 							" --exclude=stuff"
 							" --exclude=googletest"
 							" --exclude=.metadata"
+							" --exclude=core"
 							" {}").format(sToday, sExcludes, sSourceDir)
 	print(sCmd)
 

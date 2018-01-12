@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Device floater
+Name=Device Floater
 Icon=device-floater
 Type=Application
 Terminal=false
@@ -7,5 +7,5 @@ Categories=Utility;
 Encoding=UTF-8
 Comment=Floats xinput (X11) devices
 Exec=device-floater
-GenericName=Device floater
-Name[en_US]=Device floater
+GenericName=Device Floater
+Name[en_US]=Device Floater

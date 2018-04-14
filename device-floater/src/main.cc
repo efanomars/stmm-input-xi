@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2017  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2016-2018  Stefano Marsili, <stemars@gmx.ch>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ int deviceFloaterMain(int nArgC, char** aArgV)
 		oDlg.run();
 	}
 
-	const Glib::ustring sAppName = "ch.efanomars.devicefloater";
+	const Glib::ustring sAppName = "com.github.efanomars.stmm-input-xi.device-floater";
 	const Glib::ustring sWindoTitle = "device-floater " + Config::getVersionString();
 	try {
 		//

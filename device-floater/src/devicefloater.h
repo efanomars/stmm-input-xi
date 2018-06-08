@@ -35,7 +35,7 @@ class DeviceFloater
 public:
 	/* throws */
 	DeviceFloater(const Glib::RefPtr<Gdk::Display>& refDisplay);
-	virtual ~DeviceFloater();
+	~DeviceFloater();
 
 	enum DEVICE_TYPE {
 		DEVICE_TYPE_FLOATING = 0
@@ -94,6 +94,10 @@ private:
 	gulong m_nConnectHandlerDeviceAdded;
 	gulong m_nConnectHandlerDeviceChanged;
 	gulong m_nConnectHandlerDeviceRemoved;
+private:
+	DeviceFloater() = delete;
+	DeviceFloater(const DeviceFloater& oSource) = delete;
+	DeviceFloater& operator=(const DeviceFloater& oSource) = delete;
 };
 
 } // namespace stmi

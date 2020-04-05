@@ -1,3 +1,0 @@
-[submodule "libstmm-input-gtk-xi/googletest"]
-	path = libstmm-input-gtk-xi/googletest
-	url = https://github.com/google/googletest.git

@@ -1,0 +1,17 @@
+# stmm-input-gtk-xi pkg-config source file
+
+prefix=@STMMI_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: stmm-input-gtk-xi
+Description: Gtk main loop based device manager for floating xi2 devices.
+Version: @STMM_INPUT_GTK_XI_VERSION@
+URL: http://www.efanomars.com/libraries/stmm-input-xi
+# Beware! The space between the library name and the comparison (>=) is necessary!
+Requires: stmm-input-gtk >= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_GTK_VERSION@  stmm-input-ev >= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_EV_VERSION@  xi >= ${STMM_INPUT_GTK_XI_REQ_XI_VERSION}  x11 >= ${STMM_INPUT_GTK_XI_REQ_X11_VERSION}
+Conflicts:
+Libs: -L${libdir} -lstmm-input-gtk-xi
+Cflags: -I${includedir}/stmm-input-gtk-xi -I${includedir}
+

@@ -1,0 +1,7 @@
+usr/bin/device-floater
+usr/share/icons/hicolor/24x24/apps/device-floater.png
+usr/share/icons/hicolor/32x32/apps/device-floater.png
+usr/share/icons/hicolor/48x48/apps/device-floater.png
+usr/share/icons/hicolor/scalable/apps/device-floater.svg
+usr/share/applications/com.efanomars.device-floater.desktop
+usr/share/device-floater/*

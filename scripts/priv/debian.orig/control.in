@@ -1,0 +1,83 @@
+Source: stmm-input-xi
+Priority: optional
+Maintainer: Stefano Marsili <efanomars@gmx.ch>
+Build-Depends: debhelper (>= 9)
+             , cmake
+             , python3
+             , doxygen
+             , graphviz
+             , libstmm-input-gtk-dev (>= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_GTK_VERSION@)
+             , libstmm-input-ev-dev (>= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_EV_VERSION@)
+             , libxi-dev (>= @STMM_INPUT_GTK_XI_REQ_XI_VERSION@)
+             , libx11-dev (>= @STMM_INPUT_GTK_XI_REQ_X11_VERSION@)
+             , libgtkmm-3.0-dev (>= @DEVICE_FLOATER_REQ_GTKMM_VERSION@)
+             , libxi-dev (>= @DEVICE_FLOATER_REQ_XI_VERSION@)
+             , libx11-dev (>= @DEVICE_FLOATER_REQ_X11_VERSION@)
+Standards-Version: 3.9.8
+Section: libs
+Homepage: @STMMI_WEBSITE_SECTION@/stmm-input-xi
+Vcs-Git: https://www.gitlab.com/efanomars/stmm-input-xi.git
+#Vcs-Browser: https://www.gitlab.com/efanomars/stmm-input-xi.git
+
+
+Package: libstmm-input-gtk-xi@STMM_INPUT_GTK_XI_MAJOR_VERSION@
+Architecture: any
+Depends: libstmm-input-gtk@STMM_INPUT_GTK_XI_REQ_STMM_INPUT_GTK_MAJOR_VERSION@ (>= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_GTK_VERSION@)
+       , libstmm-input-ev@STMM_INPUT_GTK_XI_REQ_STMM_INPUT_EV_MAJOR_VERSION@ (>= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_EV_VERSION@)
+       , libxi6 (>= @STMM_INPUT_GTK_XI_REQ_XI_VERSION@)
+       , libx11-6 (>= @STMM_INPUT_GTK_XI_REQ_X11_VERSION@)
+       , ${shlibs:Depends}, ${misc:Depends}
+Recommends: libstmm-input-gtk-dm, stmm-input-plugins, device-floater
+Description: Device input event library - xi floating keyboards
+ Extensible device input event library for C++ (C++14).
+ .
+ This library provides a device manager that handles extra plugged in keyboards.
+ The keyboards have to be floated with the xinput command or the device-floater
+ GUI in order to be recognized.
+ .
+ The device manager only recognizes floating keyboards on a system running X11,
+ in contrast to Wayland, where devices can't be floated.
+ .
+ While it can be linked directly by programs, the plugin device manager
+ provided by the libstmm-input-gtk-dm library will automatically load 
+ this library at runtime as a plugin (unless it is disabled).
+
+Package: libstmm-input-gtk-xi-dev
+Section: libdevel
+Architecture: any
+Depends: libstmm-input-gtk-xi@STMM_INPUT_GTK_XI_MAJOR_VERSION@ (= ${binary:Version})
+       , libstmm-input-gtk-dev (>= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_GTK_VERSION@)
+       , libstmm-input-ev-dev (>= @STMM_INPUT_GTK_XI_REQ_STMM_INPUT_EV_VERSION@)
+       , libxi-dev (>= @STMM_INPUT_GTK_XI_REQ_XI_VERSION@)
+       , libx11-dev (>= @STMM_INPUT_GTK_XI_REQ_X11_VERSION@)
+       , ${misc:Depends}
+Recommends: libstmm-input-gtk-dm-dev
+Description: Device input event library - xi floating keyboards (develop)
+ Extensible device input event library for C++ (C++14).
+ .
+ This library provides a device manager that handles extra plugged in keyboards.
+ The keyboards have to be floated with the xinput command or the device-floater
+ GUI in order to be recognized.
+ .
+ The device manager only recognizes floating keyboards on a system running X11,
+ in contrast to Wayland, where devices can't be floated.
+ .
+ This package contains the development headers for the library found in
+ libstmm-input-gtk-xi@STMM_INPUT_GTK_XI_MAJOR_VERSION@.
+
+
+Package: device-floater
+Architecture: any
+Depends: libgtkmm-3.0-1v5 (>= @DEVICE_FLOATER_REQ_GTKMM_VERSION@)
+       , libxi6 (>= @DEVICE_FLOATER_REQ_XI_VERSION@)
+       , libx11-6 (>= @DEVICE_FLOATER_REQ_X11_VERSION@)
+       , ${shlibs:Depends}, ${misc:Depends}
+Suggests: libstmm-input-gtk-xi
+Description: XI device floater
+ Simple GUI application that lets you safely float keyboard and pointer
+ devices managed by X11 (XI2). It provides a subset of the
+ 'xinput float' command.
+ .
+ Floating keyboard devices are recognised by libstmm-input-gtk-xi.
+ .
+ Under Wayland devices can't be floated.

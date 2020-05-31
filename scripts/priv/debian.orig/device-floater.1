@@ -1,0 +1,54 @@
+.TH DEVICE-FLOATER 1
+.SH NAME
+device-floater \- GUI to safely float a keyboard or pointer slave device.
+.SH SYNOPSIS
+.TP 5
+\fBdevice-floater\fR [\fIOPTION\fR]
+.RI 
+.br
+
+.SH OPTIONS
+.PP
+.br
+\fB-a --acquire-secs N\fR    Acquire time is N seconds
+                       (default 10, max. 300).
+.br
+.br
+\fB-v --version\fR           Prints version.
+.br
+.br
+\fB-h --help\fR              Prints this message.
+
+.SH DESCRIPTION
+.PP
+Usually all keyboards plugged in a computer are seen as one. By floating them
+(see \fBxinput float\fR command) it's possible for an application using the 
+libstmm-input-gtk-xi library to see them as separate devices.
+This means for example that two or more players can play a game in which
+each player has it's own keyboard and can use the same keys.
+
+The \fB--acquire-secs\fR option sets the time allowed to insert the keyboard.
+The limit is necessary to prevent users from locking themselves out of their
+computer in case the main keyboard is floated.
+
+To unfloat a keyboard just plug it out and back in while not in acquire mode.
+
+.SH AUTHOR
+.PP
+Written by Stefano Marsili <efanomars@gmx.ch>.
+
+.SH LICENSE
+.PP
+Copyright © 2018-2019 Stefano Marsili.
+
+.PP
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.

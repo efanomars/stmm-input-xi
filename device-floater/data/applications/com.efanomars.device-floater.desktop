@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Device Floater
+Icon=device-floater
+Type=Application
+Terminal=false
+Categories=Utility;
+Keywords=keyboard;floating;xinput;xi;multiple;
+Comment=Floats xinput (X11) devices
+Exec=device-floater
+GenericName=Device Floater
+Name[en_US]=Device Floater

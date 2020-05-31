@@ -1,0 +1,64 @@
+/*
+ * Copyright © 2016-2019  Stefano Marsili, <stemars@gmx.ch>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, see <http://www.gnu.org/licenses/>
+ */
+/*
+ * File:   config.cc
+ */
+
+#include "config.h"
+
+#ifdef STMM_SNAP_PACKAGING
+#include <stdlib.h>
+#endif //STMM_SNAP_PACKAGING
+
+namespace stmi
+{
+
+namespace Config
+{
+
+const std::string& getVersionString() noexcept
+{
+	static std::string s_sVersion = "@DEVICE_FLOATER_VERSION@";
+	return s_sVersion;
+}
+
+#ifdef STMM_SNAP_PACKAGING
+static std::string getEnvString(const char* p0Name) noexcept
+{
+	const char* p0Value = ::secure_getenv(p0Name);
+	std::string sValue{(p0Value == nullptr) ? "" : p0Value};
+	return sValue;
+}
+#endif //STMM_SNAP_PACKAGING
+
+const std::string getDataDir() noexcept
+{
+	static std::string s_sDataDir = "@STMMI_DEVFLO_PKG_DATA_DIR@";
+
+	#ifdef STMM_SNAP_PACKAGING
+	const std::string sPrefix = getEnvString("SNAP");
+	#else
+	const std::string sPrefix;
+	#endif //STMM_SNAP_PACKAGING
+
+	return sPrefix + s_sDataDir;
+}
+
+} // namespace Config
+
+} // namespace stmi
+

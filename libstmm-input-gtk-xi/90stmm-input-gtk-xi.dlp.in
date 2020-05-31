@@ -1,0 +1,11 @@
+@STMMI_GTK_XI_INSTALL_LIB_PATH1@
+@STMMI_GTK_XI_INSTALL_LIB_PATH2@
+@STMMI_GTK_XI_INSTALL_LIB_PATH3@
+@STMMI_GTK_XI_INSTALL_LIB_PATH4@
+#=#+#=# depends
+#=#+#=# description
+Plugin for the stmm-input-dl library that provides independent keyboard
+devices based on XI2. The keyboards need to be floated with the 
+'xinput float' command or the 'device-floater' gui.
+#=#+#=# groups
+gtk

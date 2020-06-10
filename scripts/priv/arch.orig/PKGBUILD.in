@@ -8,7 +8,9 @@ url='@STMMI_WEBSITE_SECTION@/@STMMI_SOURCE_PROJECT@'
 arch=('x86_64')
 license=('GPL3' 'LGPL3')
 
-depends=('stmm-input' 'gtkmm3' 'libx11' 'libxi')
+depends=(
+    'stmm-input>=@STMM_INPUT_GTK_XI_REQ_STMM_INPUT_GTK_VERSION@'
+    'gtkmm3' 'libx11' 'libxi')
 makedepends=('cmake' 'gcc' 'doxygen' 'graphviz' 'python')
 optdepends=()
 

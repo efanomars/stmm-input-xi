@@ -1,19 +1,19 @@
-# File: libstmm-input-gtk-xi/CMakeLists.txt
+# Copyright © 2019-2020  Stefano Marsili, <stemars@gmx.ch>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public
+# License along with this program; if not, see <http://www.gnu.org/licenses/>
 
-#  Copyright © 2019-2020  Stefano Marsili, <stemars@gmx.ch>
-#
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public
-#  License along with this program; if not, see <http://www.gnu.org/licenses/>
+# File:   libstmm-input-gtk-xi/CMakeLists.txt
 
 cmake_minimum_required(VERSION 3.0)
 
@@ -56,11 +56,14 @@ set(STMMI_SOURCES
         "${STMMI_SOURCES_DIR}/flogtkbackend.cc"
         "${STMMI_SOURCES_DIR}/flogtkdevicemanager.cc"
         "${STMMI_SOURCES_DIR}/flogtklistenerextradata.h"
+        "${STMMI_SOURCES_DIR}/flogtklistenerextradata.cc"
         "${STMMI_SOURCES_DIR}/flogtkwindowdata.h"
         "${STMMI_SOURCES_DIR}/flogtkwindowdata.cc"
         "${STMMI_SOURCES_DIR}/flogtkxkeyboarddevice.h"
         "${STMMI_SOURCES_DIR}/flogtkxkeyboarddevice.cc"
         "${STMMI_SOURCES_DIR}/recycler.h"
+        "${STMMI_SOURCES_DIR}/recycler.cc"
+        "${STMMI_SOURCES_DIR}/stmm-input-gtk-xi.cc"
         )
 if (BUILD_SHARED_LIBS)
     set(STMMI_SOURCES
@@ -124,20 +127,20 @@ configure_file("${PROJECT_SOURCE_DIR}/${STMMI_PKG_PLUGIN_NAME}.dlp.in"
 if ($ENV{STMM_CMAKE_COMMENTS})
 message(STATUS "")
 message(STATUS "stmm-input-gtk-xi was configured with the following options:")
-message(STATUS " STMMI_HEADERS:                   ${STMMI_HEADERS}")
-message(STATUS " STMMI_SOURCES:                   ${STMMI_SOURCES}")
-message(STATUS " STMMI_GTK_XI_EXTRA_INCLUDE_DIRS: ${STMMI_GTK_XI_EXTRA_INCLUDE_DIRS}")
-message(STATUS " STMMI_GTK_XI_EXTRA_LIBS:         ${STMMI_GTK_XI_EXTRA_LIBS}")
-message(STATUS " CMAKE_BUILD_TYPE:                ${CMAKE_BUILD_TYPE}")
-message(STATUS " CMAKE_CXX_COMPILER_ID:           ${CMAKE_CXX_COMPILER_ID}")
-message(STATUS " CMAKE_CXX_COMPILER_VERSION:      ${CMAKE_CXX_COMPILER_VERSION}")
-message(STATUS " CMAKE_CXX_FLAGS:                 ${CMAKE_CXX_FLAGS}")
-message(STATUS " install prefix:                  ${STMMI_GTK_XI_INSTALL_PREFIX}")
-message(STATUS " BUILD_DOCS:                      ${BUILD_DOCS}")
-message(STATUS " BUILD_TESTING:                   ${BUILD_TESTING}")
+message(STATUS " STMMI_HEADERS:                     ${STMMI_HEADERS}")
+message(STATUS " STMMI_SOURCES:                     ${STMMI_SOURCES}")
+message(STATUS " STMMINPUTGTKXI_EXTRA_INCLUDE_DIRS: ${STMMINPUTGTKXI_EXTRA_INCLUDE_DIRS}")
+message(STATUS " STMMINPUTGTKXI_EXTRA_LIBS:         ${STMMINPUTGTKXI_EXTRA_LIBS}")
+message(STATUS " CMAKE_BUILD_TYPE:                  ${CMAKE_BUILD_TYPE}")
+message(STATUS " CMAKE_CXX_COMPILER_ID:             ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS " CMAKE_CXX_COMPILER_VERSION:        ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS " CMAKE_CXX_FLAGS:                   ${CMAKE_CXX_FLAGS}")
+message(STATUS " install prefix:                    ${STMMI_INSTALL_PREFIX}")
+message(STATUS " BUILD_DOCS:                        ${BUILD_DOCS}")
+message(STATUS " BUILD_TESTING:                     ${BUILD_TESTING}")
 if (BUILD_SHARED_LIBS)
-message(STATUS " STMMI_PLUGINS_DATA_DIR:          ${STMMI_PLUGINS_DATA_DIR}")
-message(STATUS " STMMI_PLUGINS_USER_DATA_DIR:     ${STMMI_PLUGINS_USER_DATA_DIR}")
+message(STATUS " STMMI_PLUGINS_DATA_DIR:            ${STMMI_PLUGINS_DATA_DIR}")
+message(STATUS " STMMI_PLUGINS_USER_DATA_DIR:       ${STMMI_PLUGINS_USER_DATA_DIR}")
 endif()
 endif()
 

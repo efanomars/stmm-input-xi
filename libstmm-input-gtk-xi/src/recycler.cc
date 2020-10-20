@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2020  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2020  Stefano Marsili, <stemars@gmx.ch>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,35 +15,7 @@
  * License along with this library; if not, see <http://www.gnu.org/licenses/>
  */
 /*
- * File:   stmm-input-gtk-xi-config.cc.in
+ * File:   recycler.cc
  */
 
-#include "stmm-input-gtk-xi-config.h"
-
-namespace stmi
-{
-
-namespace libconfig
-{
-
-namespace gtkxi
-{
-
-const char* getVersion() noexcept
-{
-	static const char* const s_pLibVersion = "@STMMI_PKG_VERSION@";
-	return s_pLibVersion;
-}
-
-const char* getPluginName() noexcept
-{
-	static const char* const s_pPluginName = "@STMMI_PKG_PLUGIN_NAME@";
-	return s_pPluginName;
-}
-
-} // namespace gtkxi
-
-} // namespace libconfig
-
-} // namespace stmi
-
+#include "recycler.h"

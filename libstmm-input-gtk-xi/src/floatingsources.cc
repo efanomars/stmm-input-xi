@@ -106,7 +106,7 @@ bool XIEventSource::checkEvent(::XEvent& oXEvent, bool& bIsGenericEvent, bool& b
 					if (nDeviceId == p0XIDeviceEv->sourceid) {
 						// It's either a floating or slave device
 						int nDevices = 0;
-						::XIDeviceInfo *pDevice = ::XIQueryDevice(m_p0XDisplay, nDeviceId, &nDevices);
+						::XIDeviceInfo* pDevice = ::XIQueryDevice(m_p0XDisplay, nDeviceId, &nDevices);
 						if (pDevice->use == XIFloatingSlave) {
 							assert(nDevices == 1);
 							bIsForFloating = true;
@@ -124,12 +124,13 @@ bool XIEventSource::checkEvent(::XEvent& oXEvent, bool& bIsGenericEvent, bool& b
 					const int nDeviceId = p0XIEnterEv->deviceid;
 					if (nDeviceId == p0XIEnterEv->sourceid) {
 						int nDevices = 0;
-						::XIDeviceInfo *pDevice = ::XIQueryDevice(m_p0XDisplay, nDeviceId, &nDevices);
+						::XIDeviceInfo* pDevice = ::XIQueryDevice(m_p0XDisplay, nDeviceId, &nDevices);
 						if (pDevice->use == XIFloatingSlave) {
 							assert(nDevices == 1);
 							bIsForFloating = true;
 							bIsFloatingEnterFocus = true;
 						}
+						::XIFreeDeviceInfo(pDevice);
 					}
 				} break;
 				}
@@ -204,10 +205,10 @@ bool XIEventSource::dispatch(sigc::slot_base* p0Slot) noexcept
 	}
 	::XNextEvent(m_p0XDisplay, &oXEvent);
 	assert(oXEvent.type == GenericEvent);
-	::XGenericEventCookie *p0Cookie = &(oXEvent.xcookie);
+	::XGenericEventCookie* p0Cookie = &(oXEvent.xcookie);
 	{
 		#ifndef NDEBUG
-		const bool bRet = 
+		const bool bRet =
 		#endif //NDEBUG
 		::XGetEventData(m_p0XDisplay, p0Cookie);
 		assert(bRet);
@@ -219,7 +220,7 @@ bool XIEventSource::dispatch(sigc::slot_base* p0Slot) noexcept
 		assert(nDeviceId == p0XIDeviceEv->sourceid);
 		int nDevices = 0;
 		{
-			::XIDeviceInfo *pDevice = ::XIQueryDevice(m_p0XDisplay, nDeviceId, &nDevices);
+			::XIDeviceInfo* pDevice = ::XIQueryDevice(m_p0XDisplay, nDeviceId, &nDevices);
 			assert(pDevice->use == XIFloatingSlave);
 			assert(nDevices == 1);
 			bContinue = (*static_cast<sigc::slot<bool, ::XIDeviceEvent*>*>(p0Slot))(p0XIDeviceEv);

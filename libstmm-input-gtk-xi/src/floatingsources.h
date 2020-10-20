@@ -23,10 +23,10 @@
 
 #include <gtkmm.h>
 
+#include <memory>
+
 #include <X11/extensions/XInput2.h>
 #include <X11/Xlib.h>
-
-#include <memory>
 
 namespace stmi
 {

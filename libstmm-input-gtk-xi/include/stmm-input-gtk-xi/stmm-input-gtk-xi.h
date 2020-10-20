@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2017-2020  Stefano Marsili, <stemars@gmx.ch>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@
 
 /* This file includes all headers of the stmm-input-gtk-xi library. */
 
-#include "xigtkdevicemanager.h"
+#include "flogtkdevicemanager.h"
 
 #include "stmm-input-gtk-xi-config.h"
 

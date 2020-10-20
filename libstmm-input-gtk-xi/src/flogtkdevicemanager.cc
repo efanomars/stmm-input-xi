@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2019  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2016-2020  Stefano Marsili, <stemars@gmx.ch>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -188,7 +188,7 @@ shared_ptr<GtkXKeyboardDevice> FloGtkDeviceManager::addGtkXKeyboardDevice(int nX
 	m_aKeyboardDevices.emplace_back(nXDeviceId, refGtkXKeyboard);
 	//
 	#ifndef NDEBUG
-	const bool bAdded = 
+	const bool bAdded =
 	#endif
 	StdDeviceManager::addDevice(refGtkXKeyboard);
 	assert(bAdded);
@@ -368,7 +368,7 @@ bool FloGtkDeviceManager::addAccessor(const shared_ptr<Accessor>& refAccessor) n
 				const auto p0SelectedGtkmmWindow = refSelectedAccessor->getGtkmmWindow();
 				std::vector< std::pair<Gtk::Window*, shared_ptr<GtkWindowData> > >::iterator itSelectedFind;
 				#ifndef NDEBUG
-				const bool bFoundWindow = 
+				const bool bFoundWindow =
 				#endif //NDEBUG
 				findWindow(p0SelectedGtkmmWindow, itSelectedFind);
 				assert(bFoundWindow);

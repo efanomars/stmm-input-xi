@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2017  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2016-2020  Stefano Marsili, <stemars@gmx.ch>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ protected:
 		m_refGtkAccessor1 = std::make_shared<stmi::GtkAccessor>(m_refWin1);
 		assert(m_refGtkAccessor1.operator bool());
 		#ifndef NDEBUG
-		const bool bAdded = 
+		const bool bAdded =
 		#endif
 		m_refAllEvDM->addAccessor(m_refGtkAccessor1);
 		assert(bAdded);

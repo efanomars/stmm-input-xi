@@ -62,7 +62,7 @@ License: CCBY-3.0
 
 
 Files: debian/*
-Copyright: 2018 Stefano Marsili <efanomars@gmx.ch>
+Copyright: 2018-2020  Stefano Marsili <efanomars@gmx.ch>
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

@@ -27,14 +27,14 @@
 
 #include <stmm-input-gtk/gtkaccessor.h>
 
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
+
 #include <cassert>
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <iterator>
-
-#include <gdk/gdk.h>
-#include <gdk/gdkx.h>
 
 namespace stmi
 {
@@ -175,25 +175,21 @@ void GtkBackend::addDevices() noexcept
 void GtkBackend::addFloatingDevice(GdkDevice* p0GdkDevice, bool bInformOwner) noexcept
 {
 	const ::GdkInputSource eSource = ::gdk_device_get_source(p0GdkDevice);
+	int32_t nTotKeys = 0;
 	if (eSource == ::GDK_SOURCE_KEYBOARD) {
 		// add the floating keyboard
+		nTotKeys = 1;
+	} else {
+		// This pointer device might not only have buttons but also keys
+		// ex. Logitech Touch Keyboard K400r only appears as Pointer even though it has a keyboard
+		nTotKeys = ::gdk_device_get_n_keys(p0GdkDevice);
+	}
+	if (nTotKeys > 0) {
 		const int nXDeviceId = ::gdk_x11_device_get_id(p0GdkDevice);
 		m_aXDeviceIds.push_back(nXDeviceId);
 		m_aGdkDevices.push_back(p0GdkDevice);
 		if (bInformOwner) {
 			onDeviceAdded(nXDeviceId);
-		}
-	} else {
-		int32_t nTotKeys = ::gdk_device_get_n_keys(p0GdkDevice);
-		if (nTotKeys > 0) {
-			// This pointer has not only buttons but also keys
-			// ex. Logitech Touch Keyboard K400r only appears as Pointer even though it has a keyboard
-			const int nXDeviceId = ::gdk_x11_device_get_id(p0GdkDevice);
-			m_aXDeviceIds.push_back(nXDeviceId);
-			m_aGdkDevices.push_back(p0GdkDevice);
-			if (bInformOwner) {
-				onDeviceAdded(nXDeviceId);
-			}
 		}
 	}
 }

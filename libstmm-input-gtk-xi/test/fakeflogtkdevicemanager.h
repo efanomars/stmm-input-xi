@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2019  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2016-2020  Stefano Marsili, <stemars@gmx.ch>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * License along with this program; if not, see <http://www.gnu.org/licenses/>
  */
 /*
- * File:   fakeflomasgtkdevicemanager.h
+ * File:   fakeflogtkdevicemanager.h
  */
 
 #ifndef STMI_TESTING_FAKE_FLO_GTK_DEVICE_MANAGER_H

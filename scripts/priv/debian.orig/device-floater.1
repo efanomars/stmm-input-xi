@@ -24,14 +24,19 @@ device-floater \- GUI to safely float a keyboard or pointer slave device.
 Usually all keyboards plugged in a computer are seen as one. By floating them
 (see \fBxinput float\fR command) it's possible for an application using the 
 libstmm-input-gtk-xi library to see them as separate devices.
-This means for example that two or more players can play a game in which
+This means, for example, that two or more players can play a game in which
 each player has it's own keyboard and can use the same keys.
 
+.PP
 The \fB--acquire-secs\fR option sets the time allowed to insert the keyboard.
 The limit is necessary to prevent users from locking themselves out of their
-computer in case the main keyboard is floated.
+computer in case the main keyboard is floated accidentally.
 
+.PP
 To unfloat a keyboard just plug it out and back in while not in acquire mode.
+
+.PP
+\fIWarning\fR: Only works with X11. Under Wayland devices can't be floated.
 
 .SH AUTHOR
 .PP
@@ -39,7 +44,7 @@ Written by Stefano Marsili <efanomars@gmx.ch>.
 
 .SH LICENSE
 .PP
-Copyright © 2018-2019 Stefano Marsili.
+Copyright © 2018-2020  Stefano Marsili.
 
 .PP
 This program is free software: you can redistribute it and/or modify

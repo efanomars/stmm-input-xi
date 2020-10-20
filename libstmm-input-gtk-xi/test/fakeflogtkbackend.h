@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2019  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2016-2020  Stefano Marsili, <stemars@gmx.ch>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public:
 	std::string getDeviceName(int32_t nXDeviceId) const noexcept override
 	{
 		#ifndef NDEBUG
-		const int32_t nIdx = 
+		const int32_t nIdx =
 		#endif
 		findXDeviceId(nXDeviceId);
 		assert(nIdx >= 0);
@@ -93,7 +93,7 @@ public:
 	void simulateDeviceChanged(int32_t nXDeviceId) noexcept
 	{
 		#ifndef NDEBUG
-		const int32_t nIdx = 
+		const int32_t nIdx =
 		#endif
 		findXDeviceId(nXDeviceId);
 		assert(nIdx >= 0);

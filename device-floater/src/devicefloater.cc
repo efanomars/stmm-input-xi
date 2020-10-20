@@ -21,14 +21,13 @@
 
 #include <gdk/gdkx.h>
 
-#include <X11/extensions/XI2.h>
-
 #include <cassert>
 #ifndef NDEBUG
 //#include <iostream>
 #endif //NDEBUG
 #include <algorithm>
 
+#include <X11/extensions/XI2.h>
 #include <X11/X.h>
 
 namespace stmi

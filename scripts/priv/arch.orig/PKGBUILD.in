@@ -11,7 +11,7 @@ license=('GPL3' 'LGPL3')
 depends=(
     'stmm-input>=@STMM_INPUT_GTK_XI_REQ_STMM_INPUT_GTK_VERSION@'
     'gtkmm3' 'libx11' 'libxi')
-makedepends=('cmake' 'gcc' 'doxygen' 'graphviz' 'python')
+makedepends=('cmake' 'doxygen' 'graphviz' 'python')
 optdepends=()
 
 #provides=("@STMMI_SOURCE_PROJECT@")

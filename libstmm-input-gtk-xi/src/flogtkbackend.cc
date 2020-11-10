@@ -23,12 +23,13 @@
 #include "flogtkwindowdata.h"
 
 #include "flogtkdevicemanager.h"
-#include "floatingsources.h"
+//#include "floatingsources.h"
 
 #include <stmm-input-gtk/gtkaccessor.h>
 
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
+#include <gdk/gdkwindow.h>
 
 #include <cassert>
 #include <algorithm>
@@ -58,6 +59,74 @@ void gdkDeviceManagerCallbackRemoved(::GdkDeviceManager* p0DeviceManager, ::GdkD
 {
 	auto p0GtkBackend = static_cast<GtkBackend*>(p0Data);
 	p0GtkBackend->gdkDeviceRemoved(p0DeviceManager, p0Device);
+}
+
+::GdkFilterReturn gdkWindowEventFilter(::GdkXEvent* p0XEevent, ::GdkEvent* /*p0Event*/, ::gpointer p0Data) noexcept
+{
+	GtkBackend* p0GtkBackend = static_cast<GtkBackend*>(p0Data);
+	XEvent* p0XEv = static_cast<XEvent*>(p0XEevent);
+
+	if (p0XEv->type != GenericEvent) {
+		return ::GDK_FILTER_CONTINUE; //----------------------------------------
+	}
+	::XGenericEventCookie* p0Cookie = &(p0XEv->xcookie);
+	if (p0Cookie->extension != p0GtkBackend->m_nXIOpcode) {
+		return ::GDK_FILTER_CONTINUE; //----------------------------------------
+	}
+	::XIEvent* p0XIEv = reinterpret_cast<::XIEvent *>(p0Cookie->data);
+	const auto nEvType = p0Cookie->evtype;
+	switch (nEvType) {
+	case XI_KeyPress:
+	case XI_KeyRelease:
+	{
+		::XIDeviceEvent* p0XIDeviceEv = reinterpret_cast<::XIDeviceEvent *>(p0XIEv);
+		const int nDeviceId = p0XIDeviceEv->deviceid;
+		if (nDeviceId != p0XIDeviceEv->sourceid) {
+			return ::GDK_FILTER_CONTINUE; //------------------------------------
+		}
+		// It's either a floating or slave device
+		int nDevices = 0;
+		::XIDeviceInfo* pDevice = ::XIQueryDevice(p0GtkBackend->m_p0XDisplay, nDeviceId, &nDevices);
+		const bool bIsFloating = (pDevice->use == XIFloatingSlave);
+		if (bIsFloating) {
+			assert(nDevices == 1);
+			//
+			p0GtkBackend->doXIDeviceEventCallback(p0XIDeviceEv);
+		}
+		::XIFreeDeviceInfo(pDevice);
+		if (! bIsFloating) {
+			return ::GDK_FILTER_CONTINUE; //------------------------------------
+		}
+		//
+	} break;
+	case XI_Enter:
+	case XI_Leave:
+	case XI_FocusIn:
+	case XI_FocusOut:
+	{
+		::XIEnterEvent* p0XIEnterEv = reinterpret_cast<::XIEnterEvent *>(p0XIEv);
+		const int nDeviceId = p0XIEnterEv->deviceid;
+		if (nDeviceId != p0XIEnterEv->sourceid) {
+			return ::GDK_FILTER_CONTINUE; //------------------------------------
+		}
+		// It's either a floating or slave device
+		int nDevices = 0;
+		::XIDeviceInfo* pDevice = ::XIQueryDevice(p0GtkBackend->m_p0XDisplay, nDeviceId, &nDevices);
+		const bool bIsFloating = (pDevice->use == XIFloatingSlave);
+		if (bIsFloating) {
+			assert(nDevices == 1);
+		}
+		::XIFreeDeviceInfo(pDevice);
+		if (! bIsFloating) {
+			return ::GDK_FILTER_CONTINUE; //------------------------------------
+		}
+	} break;
+	default:
+	{
+		return ::GDK_FILTER_CONTINUE; //----------------------------------------
+	}
+	}
+	return ::GDK_FILTER_REMOVE;
 }
 
 GtkBackend::GtkBackend(::stmi::FloGtkDeviceManager* p0Owner) noexcept
@@ -117,15 +186,16 @@ bool GtkBackend::initXI(std::string& sError) noexcept
 		sError = "FloGtkDeviceManager: internal XI Error!";
 		return false; //--------------------------------------------------------
 	} else {
-		//std::cout << "FloGtkDeviceManager: XI2 supported. Server provides version " << nMajor << "." << nMinor << std::endl;
+		//std::cout << "FloGtkDeviceManager: XI2 supported. Server provides version " << nMajor << "." << nMinor << '\n';
 	}
 
 	::XFlush( m_p0XDisplay );
 
-	assert(!m_refXIEventSource);
-	m_refXIEventSource = Glib::RefPtr<XIEventSource>(new XIEventSource(m_refGdkDisplay.operator->(), nXIOpcode));
-	m_refXIEventSource->connect(sigc::mem_fun(this, &GtkBackend::doXIDeviceEventCallback));
-	m_refXIEventSource->attach();
+	m_nXIOpcode = nXIOpcode;
+//	assert(!m_refXIEventSource);
+//	m_refXIEventSource = Glib::RefPtr<XIEventSource>(new XIEventSource(m_refGdkDisplay.operator->(), nXIOpcode));
+//	m_refXIEventSource->connect(sigc::mem_fun(this, &GtkBackend::doXIDeviceEventCallback));
+//	m_refXIEventSource->attach();
 	return true;
 }
 
@@ -311,12 +381,13 @@ int32_t GtkBackend::getXDeviceIdIdx(int32_t nXDeviceId) const noexcept
 }
 bool GtkBackend::doXIDeviceEventCallback(::XIDeviceEvent* p0XIDeviceEvent) noexcept
 {
-//std::cout << "Flo::GtkBackend::doXIDeviceEventCallback(" << (int64_t)this << ") deviceid=" << p0XIDeviceEvent->deviceid << " nXWinId=" << p0XIDeviceEvent->event << std::endl;
+//std::cout << "Flo::GtkBackend::doXIDeviceEventCallback(" << reinterpret_cast<int64_t>(this) << ") deviceid=" << p0XIDeviceEvent->deviceid << " nXWinId=" << p0XIDeviceEvent->event << '\n';
 	const bool bContinue = true;
 	static_assert(sizeof(int32_t) >= sizeof(int), "");
 	const int32_t nXDeviceId = p0XIDeviceEvent->deviceid;
 	const int32_t nIdx = getXDeviceIdIdx(nXDeviceId);
 	if (nIdx < 0) {
+//std::cout << "Flo::GtkBackend::doXIDeviceEventCallback   unknown device" << '\n';
 		return bContinue; //----------------------------------------------------
 	}
 	return onXIDeviceEvent(p0XIDeviceEvent);
@@ -346,32 +417,36 @@ bool GtkBackend::onXIDeviceEvent(::XIDeviceEvent* p0XIDeviceEvent) noexcept
 {
 	return m_p0Owner->onXIDeviceEvent(p0XIDeviceEvent);
 }
+void GtkBackend::initializeGdkWindow(::GdkWindow* p0GdkWindow) noexcept
+{
+	assert(p0GdkWindow != nullptr);
+	::gdk_window_add_filter(p0GdkWindow, gdkWindowEventFilter, this);
+}
+
 void GtkBackend::focusDevicesToWindow(const std::shared_ptr<Private::Flo::GtkWindowData>& refWinData) noexcept
 {
-//std::cout << "Flo::GtkBackend::focusDevicesToWindow  nXWinId=" << nXWinId << std::endl;
+//std::cout << "Flo::GtkBackend::focusDevicesToWindow  nXWinId=" << nXWinId << '\n';
+	Private::Flo::GtkWindowData* p0WinData = refWinData.get();
+	const ::Window nXWinId = ((p0WinData != nullptr) ? p0WinData->getXWindow() : None);
 	for (int32_t nXDeviceId : m_aXDeviceIds) {
-		if (refWinData) {
-			focusDeviceToXWindow(nXDeviceId, refWinData->getXWindow());
-		} else {
-			focusDeviceToXWindow(nXDeviceId, None);
-		}
+		focusDeviceToXWindow(nXDeviceId, nXWinId);
 	}
 }
 void GtkBackend::focusDeviceToXWindow(int32_t nXDeviceId, ::Window nXWinId) noexcept
 {
-//std::cout << "Flo::GtkBackend::focusDeviceToXWindow  nXWinId=" << nXWinId << " nDeviceId=" << nXDeviceId << std::endl;
+//std::cout << "Flo::GtkBackend::focusDeviceToXWindow  nXWinId=" << nXWinId << " nDeviceId=" << nXDeviceId << '\n';
 	::Window nCheckXWinId;
 	Status nCheckStatus = ::XIGetFocus(m_p0XDisplay, nXDeviceId, &nCheckXWinId);
 	if ((nCheckStatus == BadValue) || (nCheckStatus == BadWindow) || (nCheckStatus == BadMatch)) {
-		std::cout << "FloGtkDeviceManager::focusDeviceToXWindow() XIGetFocus failed for XI device=" << nXDeviceId << std::endl;
+		std::cout << "FloGtkDeviceManager::focusDeviceToXWindow() XIGetFocus failed for XI device=" << nXDeviceId << '\n';
 	}
 	if (nCheckXWinId == nXWinId) {
-//std::cout << "          already nDeviceId's focus window" << std::endl;
+//std::cout << "          already nDeviceId's focus window" << '\n';
 		return; //--------------------------------------------------------------
 	}
 	Status nStatus = ::XISetFocus(m_p0XDisplay, nXDeviceId, nXWinId, CurrentTime);
 	if ((nStatus == BadValue) || (nStatus == BadWindow) || (nStatus == BadMatch)) {
-		std::cout << "FloGtkDeviceManager::focusDeviceToXWindow() XISetFocus failed for XI device=" << nXDeviceId << "  nXWinId=" << nXWinId << std::endl;
+		std::cout << "FloGtkDeviceManager::focusDeviceToXWindow() XISetFocus failed for XI device=" << nXDeviceId << "  nXWinId=" << nXWinId << '\n';
 	}
 }
 

@@ -50,8 +50,6 @@ endif()
 set(STMMI_SOURCES_DIR  "${PROJECT_SOURCE_DIR}/src")
 # Source files (and headers only used for building)
 set(STMMI_SOURCES
-        "${STMMI_SOURCES_DIR}/floatingsources.h"
-        "${STMMI_SOURCES_DIR}/floatingsources.cc"
         "${STMMI_SOURCES_DIR}/flogtkbackend.h"
         "${STMMI_SOURCES_DIR}/flogtkbackend.cc"
         "${STMMI_SOURCES_DIR}/flogtkdevicemanager.cc"

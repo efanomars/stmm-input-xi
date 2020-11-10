@@ -53,7 +53,6 @@ using Private::Flo::GtkBackend;
 using Private::Flo::GtkWindowData;
 using Private::Flo::GtkWindowDataFactory;
 using Private::Flo::GtkXKeyboardDevice;
-using Private::Flo::XIEventSource;
 using Private::Flo::FloGtkListenerExtraData;
 
 std::string Private::Flo::checkIsNotWayland() noexcept
@@ -260,6 +259,7 @@ bool FloGtkDeviceManager::onXIDeviceEvent(XIDeviceEvent* p0XIDeviceEvent) noexce
 	auto& refGtkXKeyboard = itFind->second;
 	if ((!m_refSelected) || (m_refSelected->getXWindow() != p0XIDeviceEvent->event)) {
 		// shouldn't happen
+//std::cout << "FloGtkDeviceManager::onXIDeviceEvent  not selected???" << '\n';
 		return bContinue; //----------------------------------------------------
 	}
 	return refGtkXKeyboard->handleXIDeviceEvent(p0XIDeviceEvent, m_refSelected);
@@ -331,7 +331,7 @@ bool FloGtkDeviceManager::addAccessor(const shared_ptr<Accessor>& refAccessor) n
 	shared_ptr<GtkAccessor> refGtkAccessor = std::static_pointer_cast<GtkAccessor>(refAccessor);
 	if (refGtkAccessor->isDeleted()) {
 		// the window was already destroyed, unusable
-		// but if a zombie GtkAccessorData is still around, remove it
+		// but if a zombie GtkAccessor is still around, remove it
 		if (bHasAccessor) {
 			removeAccessor(itFind);
 		}

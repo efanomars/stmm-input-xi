@@ -98,11 +98,13 @@ bool GtkXKeyboardDevice::handleXIDeviceEvent(::XIDeviceEvent* p0XIDeviceEvent, c
 	#ifndef NDEBUG
 	if (p0Owner->m_refSelected != refWindowData) {
 		//TODO this shouldn't happen
+//std::cout << "GtkXKeyboardDevice::handleXIDeviceEvent() wrong window" << '\n';
 		return bContinue; //----------------------------------------------------
 	}
 	#endif //NDEBUG
 	HARDWARE_KEY eHardwareKey;
 	if (!p0Owner->m_oConverter.convertKeyCodeToHardwareKey(static_cast<guint16>(p0XIDeviceEvent->detail), eHardwareKey)) {
+//std::cout << "GtkXKeyboardDevice::handleXIDeviceEvent() could not convert key" << '\n';
 		return bContinue; //----------------------------------------------------
 	}
 	auto refListeners = p0Owner->getListeners();
@@ -138,6 +140,7 @@ bool GtkXKeyboardDevice::handleXIDeviceEvent(::XIDeviceEvent* p0XIDeviceEvent, c
 			}
 			if (!refWindowData->isEnabled()) {
 				// the accessor was removed during the callbacks!
+//std::cout << "GtkXKeyboardDevice::handleXIDeviceEvent accessor  removed???" << '\n';
 				return bContinue; //--------------------------------------------
 			}
 		}
@@ -150,7 +153,7 @@ bool GtkXKeyboardDevice::handleXIDeviceEvent(::XIDeviceEvent* p0XIDeviceEvent, c
 		assert(nEvType == XI_KeyRelease);
 		if (!bHardwareKeyPressed) {
 			// orphan release, ignore
-//std::cout << "GtkXKeyboardDevice::handleXIDeviceEvent orphan release" << std::endl;
+//std::cout << "GtkXKeyboardDevice::handleXIDeviceEvent orphan release" << '\n';
 			return bContinue; //------------------------------------------------
 		}
 		KeyData& oKeyData = itFind->second;
@@ -172,7 +175,7 @@ bool GtkXKeyboardDevice::handleXIDeviceEvent(::XIDeviceEvent* p0XIDeviceEvent, c
 }
 void GtkXKeyboardDevice::finalizeListener(FloGtkDeviceManager::ListenerData& oListenerData, int64_t nEventTimeUsec) noexcept
 {
-//std::cout << "GtkXKeyboardDevice::finalizeListener m_oPressedKeys.size()=" << m_oPressedKeys.size() << std::endl;
+//std::cout << "GtkXKeyboardDevice::finalizeListener m_oPressedKeys.size()=" << m_oPressedKeys.size() << '\n';
 	auto refOwner = getOwnerDeviceManager();
 	if (!refOwner) {
 		return;

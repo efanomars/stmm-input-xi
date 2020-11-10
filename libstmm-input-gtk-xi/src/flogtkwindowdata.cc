@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2019  Stefano Marsili, <stemars@gmx.ch>
+ * Copyright © 2016-2020  Stefano Marsili, <stemars@gmx.ch>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
  */
 
 #include "flogtkwindowdata.h"
+#include "flogtkbackend.h"
 
 #include <gdk/gdkx.h>                   // for gdk_x11_display_get_xdisplay
 
@@ -59,15 +60,17 @@ void GtkWindowData::enable(const shared_ptr<GtkAccessor>& refAccessor, FloGtkDev
 void GtkWindowData::setXWinAndXDisplay(Gtk::Window* p0GtkmmWindow) noexcept
 {
 	Glib::RefPtr<Gdk::Window> refWindow = p0GtkmmWindow->get_window();
-	GdkWindow* p0GdkWindow = refWindow->gobj();
+	::GdkWindow* p0GdkWindow = refWindow->gobj();
 	m_nXWinId = gdk_x11_window_get_xid(p0GdkWindow);
 	assert(m_nXWinId != None);
 	//
 	m_refGdkDisplay = p0GtkmmWindow->get_display();
 	assert(m_refGdkDisplay);
-	GdkDisplay* p0GdkDisplay = m_refGdkDisplay->gobj();
+	::GdkDisplay* p0GdkDisplay = m_refGdkDisplay->gobj();
 	m_p0XDisplay = gdk_x11_display_get_xdisplay(p0GdkDisplay);
 	assert(m_p0XDisplay != nullptr);
+
+	m_p0Owner->m_refBackend->initializeGdkWindow(p0GdkWindow);
 }
 void GtkWindowData::disable() noexcept
 {
@@ -119,7 +122,7 @@ bool GtkWindowData::setXIEventsForDevice(int32_t nXDeviceId, bool bSet) noexcept
 	::XIEventMask oEvMasks[ 1 ];
 
 	// TODO To be nice to others selecting events of this device
-	// TODO maybe use GetMask | key press + key release
+	// TODO maybe use GetMask | key press | key release
 	unsigned char oMask1[ ( XI_LASTEVENT + 7 ) / 8 ];
 	::memset( oMask1, 0, sizeof( oMask1 ) );
 

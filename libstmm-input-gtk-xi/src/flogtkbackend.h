@@ -55,6 +55,7 @@ using std::weak_ptr;
 void gdkDeviceManagerCallbackAdded(::GdkDeviceManager* p0DeviceManager, ::GdkDevice* p0Device, ::gpointer p0Data) noexcept;
 void gdkDeviceManagerCallbackChanged(::GdkDeviceManager* p0DeviceManager, ::GdkDevice* p0Device, ::gpointer p0Data) noexcept;
 void gdkDeviceManagerCallbackRemoved(::GdkDeviceManager* p0DeviceManager, ::GdkDevice* p0Device, ::gpointer p0Data) noexcept;
+::GdkFilterReturn gdkWindowEventFilter(::GdkXEvent* p0XEevent, ::GdkEvent* /*p0Event*/, ::gpointer p0Data) noexcept;
 
 ////////////////////////////////////////////////////////////////////////////////
 class GtkBackend : public sigc::trackable
@@ -93,6 +94,8 @@ public:
 
 	// This is used by Flo::GtkWindowData
 	::Display* getXDisplay() noexcept { return m_p0XDisplay; }
+
+	void initializeGdkWindow(::GdkWindow* p0GdkWindow) noexcept;
 protected:
 	void onDeviceChanged(int32_t nXDeviceId) noexcept;
 	void onDeviceAdded(int32_t nXDeviceId) noexcept;
@@ -103,6 +106,7 @@ private:
 	friend void Private::Flo::gdkDeviceManagerCallbackAdded(::GdkDeviceManager* p0DeviceManager, ::GdkDevice* p0Device, ::gpointer p0Data) noexcept;
 	friend void Private::Flo::gdkDeviceManagerCallbackChanged(::GdkDeviceManager* p0DeviceManager, ::GdkDevice* p0Device, ::gpointer p0Data) noexcept;
 	friend void Private::Flo::gdkDeviceManagerCallbackRemoved(::GdkDeviceManager* p0DeviceManager, ::GdkDevice* p0Device, ::gpointer p0Data) noexcept;
+	friend GdkFilterReturn Private::Flo::gdkWindowEventFilter(::GdkXEvent* p0XEevent, ::GdkEvent* p0Event, ::gpointer p0Data) noexcept;
 	//
 	bool initXI(std::string& sError) noexcept;
 	void initDeviceManager() noexcept;
@@ -126,7 +130,8 @@ private:
 	gulong m_nConnectHandlerDeviceChanged;
 	gulong m_nConnectHandlerDeviceRemoved;
 
-	Glib::RefPtr<Private::Flo::XIEventSource> m_refXIEventSource;
+//	Glib::RefPtr<Private::Flo::XIEventSource> m_refXIEventSource;
+	int32_t m_nXIOpcode;
 
 	// m_aXDeviceIds[nIdx] is the XI device id of gdk device m_aGdkDevices[iIdx]
 	std::vector< int32_t > m_aXDeviceIds; // Value: nXdeviceId

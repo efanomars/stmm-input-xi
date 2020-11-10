@@ -20,7 +20,7 @@
 #   MINOR is REVISION (implementation of interface)
 #   AGE is always 0
 set(STMM_INPUT_GTK_XI_MAJOR_VERSION 0)
-set(STMM_INPUT_GTK_XI_MINOR_VERSION 16) # !-U-!
+set(STMM_INPUT_GTK_XI_MINOR_VERSION 17) # !-U-!
 set(STMM_INPUT_GTK_XI_VERSION "${STMM_INPUT_GTK_XI_MAJOR_VERSION}.${STMM_INPUT_GTK_XI_MINOR_VERSION}.0")
 
 # required stmm-input-gtk version

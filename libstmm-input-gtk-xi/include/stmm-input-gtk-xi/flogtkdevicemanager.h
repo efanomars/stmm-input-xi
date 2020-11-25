@@ -70,7 +70,7 @@ namespace Flo
  * to a Gtk::Window, which has to be added with FloGtkDeviceManager::addAccessor()
  * wrapped in a stmi::GtkAccessor.
  * Events are only sent to the currently active window. When the active window changes
- * cancel events are sent to the old active window for each pressed key.
+ * cancel events are sent to listeners for each pressed key (tied to the old active window).
  */
 class FloGtkDeviceManager : public StdDeviceManager, public sigc::trackable
 {

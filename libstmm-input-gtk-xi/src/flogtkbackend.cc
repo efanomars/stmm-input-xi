@@ -99,8 +99,6 @@ void gdkDeviceManagerCallbackRemoved(::GdkDeviceManager* p0DeviceManager, ::GdkD
 		}
 		//
 	} break;
-	case XI_Enter:
-	case XI_Leave:
 	case XI_FocusIn:
 	case XI_FocusOut:
 	{
@@ -192,10 +190,6 @@ bool GtkBackend::initXI(std::string& sError) noexcept
 	::XFlush( m_p0XDisplay );
 
 	m_nXIOpcode = nXIOpcode;
-//	assert(!m_refXIEventSource);
-//	m_refXIEventSource = Glib::RefPtr<XIEventSource>(new XIEventSource(m_refGdkDisplay.operator->(), nXIOpcode));
-//	m_refXIEventSource->connect(sigc::mem_fun(this, &GtkBackend::doXIDeviceEventCallback));
-//	m_refXIEventSource->attach();
 	return true;
 }
 

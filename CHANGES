@@ -1,3 +1,10 @@
+stmm-input-xi (0.18) unstable; urgency=low
+
+  * Remove Enter Leave handling
+  * Increase minor version
+
+ -- Stefano Marsili <efanomars@gmx.ch>  Wed, 25 Nov 2020 19:29:39 +0100
+
 stmm-input-xi (0.17) unstable; urgency=low
 
   * Remove broken XIEventSource for GdkWindow filter

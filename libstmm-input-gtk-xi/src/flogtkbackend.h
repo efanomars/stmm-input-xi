@@ -130,10 +130,9 @@ private:
 	gulong m_nConnectHandlerDeviceChanged;
 	gulong m_nConnectHandlerDeviceRemoved;
 
-//	Glib::RefPtr<Private::Flo::XIEventSource> m_refXIEventSource;
 	int32_t m_nXIOpcode;
 
-	// m_aXDeviceIds[nIdx] is the XI device id of gdk device m_aGdkDevices[iIdx]
+	// m_aXDeviceIds[nIdx] is the XI device id of gdk device m_aGdkDevices[nIdx]
 	std::vector< int32_t > m_aXDeviceIds; // Value: nXdeviceId
 	std::vector< ::GdkDevice* > m_aGdkDevices; // Value: Gdk Device, Size: m_aXDeviceIds.size())
 private:
